@@ -5,6 +5,8 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public GameObject arrows;
+    public int blockID;
+    public string blockName;
     // Start is called before the first frame update
     void Start()
     {
