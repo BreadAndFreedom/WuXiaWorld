@@ -28,32 +28,17 @@ public class DateCounter : MonoBehaviour
         currentDate = new DateTime(startYear, startMonth, startDay).AddDays(totalDays);
         UpdateDateDisplay();
     }
-
+        
     // 更新日期显示（可以在UI中显示）
     private void UpdateDateDisplay()
     {
         Debug.Log($"当前日期: {currentDate.Year}年{currentDate.Month}月{currentDate.Day}日 (总天数: {totalDays})");
     }
-
-    // 示例：在Inspector中点击按钮增加天数
-    [ContextMenu("增加10天")]
-    private void Add10Days()
+    //获取当前日期
+    public DateTime GetCurrentDate()
     {
-        AddDays(10);
+        return currentDate;
     }
-
-    [ContextMenu("增加30天")]
-    private void Add30Days()
-    {
-        AddDays(30);
-    }
-
-    [ContextMenu("增加365天")]
-    private void Add365Days()
-    {
-        AddDays(365);
-    }
-
     // 获取当前日期信息
     public int GetCurrentYear() => currentDate.Year;
     public int GetCurrentMonth() => currentDate.Month;
