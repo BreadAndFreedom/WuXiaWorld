@@ -5,6 +5,7 @@ using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -17,13 +18,15 @@ public class DialogSystem : MonoBehaviour
     public List<string> names = new List<string>();
     public List<GameObject> characters = new List<GameObject>();
     public List<TMP_Text> texts = new List<TMP_Text>();
-
+    [Header("生成按钮预制体")]
+    public GameObject optionButton;//选项按钮预制体
+    public Transform buttonGroup;//按钮组的位置
 
     private string[] dialogRows;
-    private int dialogIndex = 1;
+    public int dialogIndex = 1;
     private List<Dialog> dialogs = new List<Dialog>();
     private bool isSettled = false;
-    private bool hasEnd = false;
+    public bool hasEnd = false;
     AsyncOperation async;
     public void Update()
     {
@@ -50,7 +53,7 @@ public class DialogSystem : MonoBehaviour
         {
             //textList.Add(cell);
             string[] cells = row.Split(',');
-            if (cells[0] == "#" && int.Parse(cells[1]) == dialogIndex)
+            if (cells[0] == "#" && int.Parse(cells[1]) == dialogIndex)//判断为语句标识为#以及编号是否对应
             {
                 foreach (var dialog in dialogs)
                 {
@@ -69,18 +72,19 @@ public class DialogSystem : MonoBehaviour
                 break;
             }
 
-            else if (cells[0] == "END")
+            else if (cells[0] == "END" && int.Parse(cells[1]) == dialogIndex)
             {
-                foreach (var canva in characters)
+                foreach (var canva in characters)//关闭所有角色下的幕布
                 {
                     canva.SetActive(false);
 
                 }
                 hasEnd = true;
             }
-            else if (cells[0] == "&")//差分，切换图片
+            else if (cells[0] == "&" && int.Parse(cells[1]) == dialogIndex)//弹出选项窗口
             {
-
+                Debug.Log("选项来咯");
+                GenerateOption(dialogIndex);//先用序号标识符试试
             }
             else if (cells[0] == "%")//切换场景
             {
@@ -89,6 +93,30 @@ public class DialogSystem : MonoBehaviour
             }
         }
     }
+    public void GenerateOption(int _index)
+    {
+        string[] cells = dialogRows[_index].Split(',');
+        if (cells[0] == "&")
+        {
+            GameObject optButton = Instantiate(optionButton, buttonGroup);//绑定了按钮的事件
+            optButton.GetComponentInChildren<TMP_Text>().text = cells[3];
+            optButton.GetComponent<Button>().onClick.AddListener
+                (
+                    delegate
+                    {
+                        OnOptionClick(int.Parse(cells[4]));
+                        Debug.Log(cells[4]);
+                    }
+                );
+            GenerateOption(_index + 1);
+        }
+    }
+    public void OnOptionClick(int _id)
+    {
+        dialogIndex = _id;
+        ShowDialogRow();
+    }
+
     public void OnClickNext()
     {
         if (isSettled == false)

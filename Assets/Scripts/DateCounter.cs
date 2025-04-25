@@ -4,9 +4,9 @@ using System;
 public class DateCounter : MonoBehaviour
 {
     // 起始日期（年, 月, 日）
-    public int startYear = 2023;
-    public int startMonth = 1;
-    public int startDay = 1;
+    public int startYear;
+    public int startMonth;
+    public int startDay;
 
     // 当前累计天数
     private int totalDays = 0;
