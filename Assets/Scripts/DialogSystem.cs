@@ -27,10 +27,11 @@ public class DialogSystem : MonoBehaviour
     private List<Dialog> dialogs = new List<Dialog>();
     private bool isSettled = false;
     public bool hasEnd = false;
+    public bool isSelecting = false;
     AsyncOperation async;
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false && isSelecting==false)
         {
             OnClickNext();
         }
@@ -85,6 +86,8 @@ public class DialogSystem : MonoBehaviour
             {
                 Debug.Log("选项来咯");
                 GenerateOption(dialogIndex);//先用序号标识符试试
+                isSelecting = true;
+                break;
             }
             else if (cells[0] == "%")//切换场景
             {
@@ -105,6 +108,7 @@ public class DialogSystem : MonoBehaviour
                     delegate
                     {
                         OnOptionClick(int.Parse(cells[4]));
+                        isSelecting = false;
                         Debug.Log(cells[4]);
                     }
                 );
@@ -115,6 +119,10 @@ public class DialogSystem : MonoBehaviour
     {
         dialogIndex = _id;
         ShowDialogRow();
+        for (int i = 0;i < buttonGroup.childCount; i++)
+        {
+            Destroy(buttonGroup.GetChild(i).gameObject);
+        }
     }
 
     public void OnClickNext()
