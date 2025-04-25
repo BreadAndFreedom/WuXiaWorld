@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public GameObject arrows;
+    public GameObject startArrows;
+    public GameObject endArrows;
     public int blockID;
     public string blockName;
     // Start is called before the first frame update
@@ -20,6 +21,7 @@ public class Block : MonoBehaviour
     }
     public void OnClick()
     {
-        arrows.SetActive(true);
+        endArrows.SetActive(true);
+        startArrows.SetActive(false);
     }
 }

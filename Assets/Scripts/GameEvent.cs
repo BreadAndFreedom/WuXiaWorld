@@ -14,11 +14,12 @@ public class GameEvent :  MonoBehaviour
     public int startYear; //年月日
     public int startMonth;
     public int startDay;
+    public GameObject dialog;
     // 检查事件是否符合条件
-    public void Start()
+    public void Awake()
     {
         eventTime = new DateTime(startYear, startMonth, startDay);//事件截止日期初始化
-        Debug.Log($"事件{eventID}截止日期: {eventTime.Year}年{eventTime.Month}月{eventTime.Day}日");
+        //Debug.Log($"事件{eventID}截止日期: {eventTime.Year}年{eventTime.Month}月{eventTime.Day}日");
     }
     public bool IsValid(int morality, DateTime currentTime, int blockID)
     {

@@ -14,8 +14,7 @@ public class EventPoolManager : MonoBehaviour
     public void Start()
     {
         currentTime = DateManager.GetCurrentDate();//事件截止日期初始化
-        GameEvent event1 = GetRandomEvent(morality, currentTime, blockID);
-        Debug.Log(event1.description);//测试输出
+        
     }
     // 从事件池中随机获取一个符合条件的事件
     public GameEvent GetRandomEvent(int morality, DateTime currentTime, int blockID)
@@ -40,7 +39,14 @@ public class EventPoolManager : MonoBehaviour
         }
 
         int randomValue = UnityEngine.Random.Range(0, validEvents.Count);
+        Debug.Log(randomValue);
         return validEvents[randomValue];
+    }
+    public void OnClick()
+    {
+        GameEvent event1 = GetRandomEvent(morality, currentTime, blockID);
+        Debug.Log(event1.description);//测试输出
+        event1.dialog.SetActive(true);
     }
 
 }
