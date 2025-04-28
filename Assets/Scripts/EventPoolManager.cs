@@ -6,9 +6,10 @@ public class EventPoolManager : MonoBehaviour
 {
     public List<GameEvent> allEvents = new List<GameEvent>();
     public DateCounter DateManager;
+    public GameObject CharacterManager;
     //测试用，临时获取公用变量
-    public int morality;
-    public int blockID;
+    private int morality;
+    private int blockID;
     public DateTime currentTime;
 
     public void Start()
@@ -40,10 +41,13 @@ public class EventPoolManager : MonoBehaviour
 
         int randomValue = UnityEngine.Random.Range(0, validEvents.Count);
         Debug.Log(randomValue);
+        validEvents[randomValue].dialog.SetActive(true);//激活对话
         return validEvents[randomValue];
     }
     public void OnClick()
     {
+        morality = CharacterManager.GetComponent<CharacterManager>().morality;
+        blockID = CharacterManager.GetComponent<CharacterManager>().blockID;
         GameEvent event1 = GetRandomEvent(morality, currentTime, blockID);
         Debug.Log(event1.description);//测试输出
         event1.dialog.SetActive(true);

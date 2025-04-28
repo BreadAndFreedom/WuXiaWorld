@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using TMPro;
 
 public class DateCounter : MonoBehaviour
 {
@@ -7,6 +8,9 @@ public class DateCounter : MonoBehaviour
     public int startYear;
     public int startMonth;
     public int startDay;
+
+    //右上角日期面板
+    public GameObject datePanel;
 
     // 当前累计天数
     private int totalDays = 0;
@@ -20,7 +24,10 @@ public class DateCounter : MonoBehaviour
         currentDate = new DateTime(startYear, startMonth, startDay);
         UpdateDateDisplay();
     }
-
+    private void Update()
+    {
+        datePanel.GetComponent<TMP_Text>().text = currentDate.Year+"年"+currentDate.Month+"月"+currentDate.Day+"日";
+    }
     // 增加天数
     public void AddDays(int daysToAdd)
     {
