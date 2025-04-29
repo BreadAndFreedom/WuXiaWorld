@@ -40,7 +40,7 @@ public class EventPoolManager : MonoBehaviour
         }
 
         int randomValue = UnityEngine.Random.Range(0, validEvents.Count);
-        Debug.Log(randomValue);
+        //Debug.Log(randomValue);
         validEvents[randomValue].dialog.SetActive(true);//¼¤»î¶Ô»°
         return validEvents[randomValue];
     }

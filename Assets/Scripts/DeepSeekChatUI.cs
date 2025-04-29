@@ -5,6 +5,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TMPro;
 
 public class DeepSeekChatUI : MonoBehaviour
 {
@@ -14,9 +15,9 @@ public class DeepSeekChatUI : MonoBehaviour
     public string model = "deepseek-chat";
 
     [Header("UI Components")]
-    [SerializeField] private InputField userInputField;
+    [SerializeField] private TMP_InputField userInputField;
     [SerializeField] private Button sendButton;
-    [SerializeField] private Text chatDisplayText;  // 确保这个组件已正确连接
+    [SerializeField] private TMP_Text chatDisplayText;  // 确保这个组件已正确连接
     [SerializeField] private ScrollRect chatScrollRect;
     [SerializeField] private GameObject loadingIndicator;
 

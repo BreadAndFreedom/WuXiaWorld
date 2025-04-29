@@ -21,6 +21,8 @@ public class DialogSystem : MonoBehaviour
     [Header("生成按钮预制体")]
     public GameObject optionButton;//选项按钮预制体
     public Transform buttonGroup;//按钮组的位置
+    public GameObject aiWindow;//金手指窗口
+    public GameObject aiButton;//
 
     private string[] dialogRows;
     public int dialogIndex = 1;
@@ -31,7 +33,7 @@ public class DialogSystem : MonoBehaviour
     AsyncOperation async;
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false && isSelecting==false)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false && isSelecting == false)
         {
             OnClickNext();
         }
@@ -84,7 +86,7 @@ public class DialogSystem : MonoBehaviour
             }
             else if (cells[0] == "&" && int.Parse(cells[1]) == dialogIndex)//弹出选项窗口
             {
-                Debug.Log("选项来咯");
+                //Debug.Log("选项来咯");
                 GenerateOption(dialogIndex);//先用序号标识符试试
                 isSelecting = true;
                 break;
@@ -109,7 +111,13 @@ public class DialogSystem : MonoBehaviour
                     {
                         OnOptionClick(int.Parse(cells[4]));
                         isSelecting = false;
-                        Debug.Log(cells[4]);
+                        Debug.Log(cells[5]);
+                        if (cells[5]!= "")
+                        {
+                            string[] effects = cells[5].Split('@');
+                            Debug.Log(effects[0]);
+                            OptionEffect(effects[0]);
+                        }
                     }
                 );
             GenerateOption(_index + 1);
@@ -119,7 +127,7 @@ public class DialogSystem : MonoBehaviour
     {
         dialogIndex = _id;
         ShowDialogRow();
-        for (int i = 0;i < buttonGroup.childCount; i++)
+        for (int i = 0; i < buttonGroup.childCount; i++)
         {
             Destroy(buttonGroup.GetChild(i).gameObject);
         }
@@ -164,9 +172,18 @@ public class DialogSystem : MonoBehaviour
         public int index;
 
     }
-    public void SelectScene(int index)
+    public void SelectScene(int index)//切换场景的方法
     {
         async = SceneManager.LoadSceneAsync(index);
         async.allowSceneActivation = true;
+    }
+
+    public void OptionEffect(string effect)//用于唤出AI窗口的方法
+    {
+        if (effect == "呼出金手指")
+        {
+            aiWindow.SetActive(true);
+            aiButton.SetActive(false);
+        }
     }
 }
