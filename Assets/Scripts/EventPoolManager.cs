@@ -49,6 +49,7 @@ public class EventPoolManager : MonoBehaviour
         morality = CharacterManager.GetComponent<CharacterManager>().morality;
         blockID = CharacterManager.GetComponent<CharacterManager>().blockID;
         GameEvent event1 = GetRandomEvent(morality, currentTime, blockID);
+        DateManager.AddDays(10);
         Debug.Log(event1.description);//²âÊÔÊä³ö
         event1.dialog.SetActive(true);
     }

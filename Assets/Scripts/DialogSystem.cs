@@ -22,7 +22,7 @@ public class DialogSystem : MonoBehaviour
     public GameObject optionButton;//选项按钮预制体
     public Transform buttonGroup;//按钮组的位置
     public GameObject aiWindow;//金手指窗口
-    public GameObject aiButton;//
+    public GameObject aiButton;//唤出金手指的按钮
 
     private string[] dialogRows;
     public int dialogIndex = 1;
