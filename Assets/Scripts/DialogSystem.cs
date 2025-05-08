@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -67,7 +68,7 @@ public class DialogSystem : MonoBehaviour
                             characters[dialog.index].SetActive(true);
                             dialogs[dialog.index].isActive = true;
                         }
-                        dialogs[dialog.index].text.text = cells[3];//更新文本
+                        dialogs[dialog.index].text.DOText(cells[3],0.5f);//更新文本,加入了打字机效果
                     }
 
                 }
