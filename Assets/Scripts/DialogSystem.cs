@@ -19,11 +19,18 @@ public class DialogSystem : MonoBehaviour
     public List<string> names = new List<string>();
     public List<GameObject> characters = new List<GameObject>();
     public List<TMP_Text> texts = new List<TMP_Text>();
+    public List<Sprite> sprites = new List<Sprite>();
     [Header("生成按钮预制体")]
     public GameObject optionButton;//选项按钮预制体
     public Transform buttonGroup;//按钮组的位置
     public GameObject aiWindow;//金手指窗口
     public GameObject aiButton;//唤出金手指的按钮
+    [Header("立绘位置")]
+    public Image left;
+    public Image midLeft;
+    public Image mid;
+    public Image midRight;
+    public Image right;
 
     private string[] dialogRows;
     public int dialogIndex = 1;
@@ -34,16 +41,16 @@ public class DialogSystem : MonoBehaviour
     AsyncOperation async;
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false && isSelecting == false)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && hasEnd == false && isSelecting == false)//限制点击条件
         {
             OnClickNext();
         }
     }
     public void DialogModule()
     {
-        InitializeObjects();
-        GetTextFromFile();
-        ShowDialogRow();
+        InitializeObjects();//初始化
+        GetTextFromFile();//读取文档
+        ShowDialogRow();//逐行显示
     }
     void GetTextFromFile()
     {
@@ -59,6 +66,7 @@ public class DialogSystem : MonoBehaviour
             string[] cells = row.Split(',');
             if (cells[0] == "#" && int.Parse(cells[1]) == dialogIndex)//判断为语句标识为#以及编号是否对应
             {
+                ChangePortrait(dialogIndex);
                 foreach (var dialog in dialogs)
                 {
                     if (cells[2] == dialog.identify)//通过id寻址，找到对应的对象
@@ -69,6 +77,7 @@ public class DialogSystem : MonoBehaviour
                             dialogs[dialog.index].isActive = true;
                         }
                         dialogs[dialog.index].text.DOText(cells[3],0.5f);//更新文本,加入了打字机效果
+                        //dialogs[dialog.index].text.text=cells[3];//更新文本
                     }
 
                 }
@@ -99,9 +108,9 @@ public class DialogSystem : MonoBehaviour
             }
         }
     }
-    public void GenerateOption(int _index)
+    public void GenerateOption(int index)
     {
-        string[] cells = dialogRows[_index].Split(',');
+        string[] cells = dialogRows[index].Split(',');
         if (cells[0] == "&")
         {
             GameObject optButton = Instantiate(optionButton, buttonGroup);//绑定了按钮的事件
@@ -121,7 +130,27 @@ public class DialogSystem : MonoBehaviour
                         }
                     }
                 );
-            GenerateOption(_index + 1);
+            GenerateOption(index + 1);
+        }
+    }
+    public void ChangePortrait(int index)
+    {
+        string[] cells = dialogRows[index].Split(',');
+        if (cells[0] == "#")
+        {
+            if (cells[5]!= "")//检测效果格是否为空
+            {
+                string[] effects = cells[5].Split('@');//检测@来拆分文本
+                Debug.Log(cells[5]);
+                foreach (var dialog in dialogs)
+                {
+                    if (effects[0] == dialog.identify)//通过id寻址，找到对应图片的标号
+                    {
+                        Debug.Log(dialog.index);
+                        PortraitPos(dialog.index,effects[1]);
+                    }
+                }
+            }
         }
     }
     public void OnOptionClick(int _id)
@@ -185,6 +214,33 @@ public class DialogSystem : MonoBehaviour
         {
             aiWindow.SetActive(true);
             aiButton.SetActive(false);
+        }
+    }   
+    public void PortraitPos(int index,string pos)//用于唤出AI窗口的方法
+    {
+        Color color = new Color(255,255,255,0);
+        color.a = 1f;
+        if (pos == "左")
+        {
+            left.sprite = sprites[index];
+            left.color = color;
+        }
+        if (pos == "中左")
+        {
+            midLeft.sprite = sprites[index];
+        }
+        if (pos == "中")
+        {
+            mid.sprite = sprites[index];
+            mid.color = color;
+        }
+        if (pos == "中右")
+        {
+            midRight.sprite = sprites[index];
+        }
+        if (pos == "右")
+        {
+            right.sprite = sprites[index];
         }
     }
 }
